@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "glad/gl.h"
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 float vertices[] = {
     -0.5, -0.5, 0.0,
     0.5, -0.5, 0.0,
-    0.0, 0.5, 0.0};
+    -0.5, 0.5, 0.0,
+    -0.5, -0.5, 0.0,
+    0.5, -0.5, 0.0,
+    -0.5, 0.5, 0.0,
+};
 
 const char *vertex_shader_src = "#version 330 core\n"
                                 "layout (location = 0) in vec3 point;\n"
@@ -61,7 +65,7 @@ int main()
     }
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     GLFWwindow *window = glfwCreateWindow(640, 480, "Hello world", NULL, NULL);
     if (!window)
     {
@@ -74,7 +78,7 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     glfwMakeContextCurrent(window);
-    gladLoadGL(glfwGetProcAddress);
+    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     glfwSwapInterval(1);
 
     unsigned int vao;
@@ -104,7 +108,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shader_program);
-        glBindVertexArray(0);
+        glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
